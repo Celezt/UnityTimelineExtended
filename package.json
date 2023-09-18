@@ -1,0 +1,14 @@
+{
+  "name": "com.celezt.timelineextended",
+  "version": "1.0.0",
+  "displayName": "Timeline Extended",
+  "description": "Extends functionalities of Unity.Timeline and Unity.Playable. Used for creating complex custom tracks without all the boilerplate code.",
+  "unity": "2021.2",
+  "keywords": [
+    "Timeline",
+    "Playable"
+  ],
+  "dependencies": {
+    "com.unity.timeline": "1.7.4"
+  }
+}

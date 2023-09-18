@@ -1,0 +1,18 @@
+{
+    "name": "celezt.timelineextension.editor",
+    "rootNamespace": "Celezt.Timeline.Editor",
+    "references": [
+        "GUID:afc64bd2d0b5b8d46bd27e8d8e151d68"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
