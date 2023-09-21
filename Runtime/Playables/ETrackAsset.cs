@@ -7,42 +7,41 @@ using UnityEngine.Timeline;
 
 namespace Celezt.Timeline
 {
-    public abstract class TrackAssetExtended : TrackAsset
+    public abstract class ETrackAsset : TrackAsset
     {
-        public MixerBehaviourExtended Mixer { get; internal set; }
+        public EMixerBehaviour Mixer { get; internal set; }
 
         protected PlayableDirector _director;
 
-        private HashSet<PlayableAssetExtended> _pendingOnCreate = new HashSet<PlayableAssetExtended>();
+        private HashSet<EPlayableAsset> _pendingOnCreate = new HashSet<EPlayableAsset>();
 
-        protected virtual MixerBehaviourExtended CreateTrackMixer(PlayableGraph graph, PlayableDirector director, GameObject go, int inputCount) => new MixerBehaviourExtended();
+        protected virtual EMixerBehaviour CreateTrackMixer(PlayableGraph graph, PlayableDirector director, GameObject go, int inputCount) => new EMixerBehaviour();
 
         public sealed override Playable CreateTrackMixer(PlayableGraph graph, GameObject go, int inputCount)
         {
             if (_director == null)
                 _director = graph.GetResolver() as PlayableDirector;
 
-            MixerBehaviourExtended template = CreateTrackMixer(graph, _director, go, inputCount);
-            template.Track = this;
+            EMixerBehaviour template = CreateTrackMixer(graph, _director, go, inputCount);
+            template._track = this;
 
             foreach (TimelineClip clip in GetClips())
             {
-                if (clip.asset is PlayableAssetExtended)
+                if (clip.asset is EPlayableAsset)
                 {
-                    PlayableAssetExtended asset = clip.asset as PlayableAssetExtended;
-                    asset.Clip = clip;
-                    asset.Director = _director;
-                    asset.IsReady = true;
+                    EPlayableAsset asset = clip.asset as EPlayableAsset;
+                    asset._clip = clip;
+                    asset._director = _director;
 
-                    PlayableBehaviourExtended behaviour = null;
+                    EPlayableBehaviour behaviour = null;
                     if (asset.BehaviourReference == null)
                         behaviour = asset.Initialization(graph, go);
                     else
                         behaviour = asset.BehaviourReference;
 
-                    behaviour.Director = _director;
-                    behaviour.Asset = asset;
-                    behaviour.Clip = clip;
+                    behaviour._director = _director;
+                    behaviour._asset = asset;
+                    behaviour._clip = clip;
 
                     clip.displayName = asset.name;
 
@@ -56,12 +55,12 @@ namespace Celezt.Timeline
                 }
             }
 
-            return ScriptPlayable<MixerBehaviourExtended>.Create(graph, template, inputCount);
+            return ScriptPlayable<EMixerBehaviour>.Create(graph, template, inputCount);
         }
 
         protected sealed override void OnCreateClip(TimelineClip clip)
         {
-            if (clip.asset is PlayableAssetExtended asset)    // Waiting on being created.
+            if (clip.asset is EPlayableAsset asset)    // Waiting on being created.
                 _pendingOnCreate.Add(asset);
         }
     }

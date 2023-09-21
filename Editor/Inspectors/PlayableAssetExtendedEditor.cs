@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Celezt.Timeline.Editor
 {
-    [CustomEditor(typeof(PlayableAssetExtended), true)]
+    [CustomEditor(typeof(EPlayableAsset), true)]
     public class PlayableAssetExtendedEditor : UnityEditor.Editor
     {
         public virtual void BuildInspector() { }

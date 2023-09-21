@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Celezt.Timeline.Editor
 {
-    [CustomEditor(typeof(TrackAssetExtended), true)]
+    [CustomEditor(typeof(ETrackAsset), true)]
     public class TrackExtendedEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
