@@ -49,7 +49,7 @@ namespace Celezt.Timeline
 
                     if (_pendingOnCreate.Contains(asset))
                     {
-                        behaviour.OnCreateClip();
+                        behaviour.OnCreate();
                         _pendingOnCreate.Remove(asset);
                     }
                 }

@@ -45,9 +45,18 @@ namespace Celezt.Timeline
         private double _time;
         private bool _isPlayingForward;
 
+        /// <summary>
+        /// When a clip is first entered regardless of direction.
+        /// </summary>
         protected virtual void OnEnterClip(Playable playable, EPlayableBehaviour behaviour, FrameData info, float weight, object playerData) { }
+        /// <summary>
+        /// When processing a clip. Does not call at the same frame as enter clip.
+        /// </summary>
         protected virtual void OnProcessClip(Playable playable, EPlayableBehaviour behaviour, FrameData info, float weight, object playerData) { }
-        protected virtual void OnAfterExitClip(Playable playable, EPlayableBehaviour behaviour, FrameData info, float weight, object playerData) { }
+        /// <summary>
+        /// After a clip has been exited.
+        /// </summary>
+        protected virtual void OnExitedClip(Playable playable, EPlayableBehaviour behaviour, FrameData info, float weight, object playerData) { }
 
         public sealed override void ProcessFrame(Playable playable, FrameData info, object playerData)
         {
@@ -66,7 +75,7 @@ namespace Celezt.Timeline
             EPlayableBehaviour? currentFirstBehaviour = null;
             EPlayableBehaviour? currentSecondBehaviour = null;
 
-        int inputCount = playable.GetInputCount();
+            int inputCount = playable.GetInputCount();
 
             for (int i = 0; i < inputCount; i++)
             {
@@ -101,16 +110,16 @@ namespace Celezt.Timeline
                 _firstBehaviour != currentFirstBehaviour &&
                 _firstBehaviour != currentSecondBehaviour)
             {
-                _firstBehaviour.AfterExitClip(_firstPlayable, info, _firstWeight, playerData);
-                OnAfterExitClip(_firstPlayable, _firstBehaviour, info, _firstWeight, playerData);
+                _firstBehaviour.OnExited(_firstPlayable, info, _firstWeight, playerData);
+                OnExitedClip(_firstPlayable, _firstBehaviour, info, _firstWeight, playerData);
             }
 
             if (_secondBehaviour != null &&
                 _secondBehaviour != currentFirstBehaviour &&
                 _secondBehaviour != currentSecondBehaviour)
             {
-                _secondBehaviour.AfterExitClip(_secondPlayable, info, _secondWeight, playerData);
-                OnAfterExitClip(_secondPlayable, _secondBehaviour, info, _secondWeight, playerData);
+                _secondBehaviour.OnExited(_secondPlayable, info, _secondWeight, playerData);
+                OnExitedClip(_secondPlayable, _secondBehaviour, info, _secondWeight, playerData);
             }
 
             if (currentFirstBehaviour != null)
@@ -118,12 +127,12 @@ namespace Celezt.Timeline
                 if (currentFirstBehaviour != _firstBehaviour &&
                     currentFirstBehaviour != _secondBehaviour)
                 {
-                    currentFirstBehaviour.EnterClip(currentFirstPlayable, info, currentFirstWeight, playerData);
+                    currentFirstBehaviour.OnEnter(currentFirstPlayable, info, currentFirstWeight, playerData);
                     OnEnterClip(currentFirstPlayable, currentFirstBehaviour, info, currentFirstWeight, playerData);
                 }
                 else
                 {
-                    currentFirstBehaviour.ProcessClip(currentFirstPlayable, info, currentFirstWeight, playerData);
+                    currentFirstBehaviour.OnProcess(currentFirstPlayable, info, currentFirstWeight, playerData);
                     OnProcessClip(currentFirstPlayable, currentFirstBehaviour, info, currentFirstWeight, playerData);
                 }
             }
@@ -133,12 +142,12 @@ namespace Celezt.Timeline
                 if (currentSecondBehaviour != _firstBehaviour &&
                     currentSecondBehaviour != _secondBehaviour)
                 {
-                    currentSecondBehaviour.EnterClip(currentSecondPlayable, info, currentSecondWeight, playerData);
+                    currentSecondBehaviour.OnEnter(currentSecondPlayable, info, currentSecondWeight, playerData);
                     OnEnterClip(currentSecondPlayable, currentSecondBehaviour, info, currentSecondWeight, playerData);
                 }
                 else
                 {
-                    currentSecondBehaviour.ProcessClip(currentSecondPlayable, info, currentSecondWeight, playerData);
+                    currentSecondBehaviour.OnProcess(currentSecondPlayable, info, currentSecondWeight, playerData);
                     OnProcessClip(currentSecondPlayable, currentSecondBehaviour, info, currentSecondWeight, playerData);
                 }
             }
