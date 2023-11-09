@@ -91,18 +91,19 @@ namespace Celezt.Timeline
 
                     if (currentFirstBehaviour == null)
                     {
-                        currentFirstWeight = weight;
                         currentFirstPlayable = currentPlayable;
                         currentFirstBehaviour = currentBehaviour;
                     }
                     else if (currentSecondBehaviour == null)
                     {
-                        currentSecondWeight = weight;
                         currentSecondPlayable = currentPlayable;
                         currentSecondBehaviour = currentBehaviour;
                     }
-                    else    // If two clips has been found.
-                        break;
+
+                    if (currentBehaviour == currentFirstBehaviour)
+                        currentFirstWeight = weight;
+                    else if (currentBehaviour == currentSecondBehaviour)
+                        currentSecondWeight = weight;
                 }
             }
 

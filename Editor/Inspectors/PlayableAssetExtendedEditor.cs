@@ -22,6 +22,7 @@ namespace Celezt.Timeline.Editor
                 DrawPropertiesExcluding(serializedObject, "m_Script");
 
             serializedObject.ApplyModifiedProperties();
+            serializedObject.UpdateIfRequiredOrScript();
         }
 
         protected object GetValue(object instance, string name) => GetValue<object>(instance, name);
